@@ -25,4 +25,13 @@ public class FiguresPool {
             }
         }
     }
+
+    public boolean isEmpty() {
+        for (Figure figure : figures) {
+            if (figure != null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

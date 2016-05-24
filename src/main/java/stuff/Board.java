@@ -54,9 +54,11 @@ public class Board {
     }
 
     private boolean verify(Figure figure1, Figure figure2, Figure figure3, Figure figure4) {
+        if (!verifyNotEmpty(figure1, figure2, figure3, figure4)) {
+            return false;
+        }
         return
-                verifyNotEmpty(figure1, figure2, figure3, figure4) ||
-                        verifySize(figure1, figure2, figure3, figure4) ||
+                verifySize(figure1, figure2, figure3, figure4) ||
                         verifyColor(figure1, figure2, figure3, figure4) ||
                         verifyShape(figure1, figure2, figure3, figure4) ||
                         verifyRelief(figure1, figure2, figure3, figure4);

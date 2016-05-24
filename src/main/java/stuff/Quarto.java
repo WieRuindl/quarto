@@ -7,7 +7,6 @@ import java.util.List;
 public class Quarto extends BasicGame {
 
     private GameManager gameManager;
-    private GameStage gameStage;
 
     public Quarto(String title) {
         super(title);
@@ -16,54 +15,19 @@ public class Quarto extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         gameManager = new GameManager();
-        gameStage = GameStage.SELECT_FIGURE;
     }
-
-    private Figure chosenFigure;
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
         if (button == Input.MOUSE_LEFT_BUTTON) {
-            if (gameStage == GameStage.SELECT_FIGURE) {
-                Figure figure = selectFigure(x, y);
-                if (figure != null) {
-                    chosenFigure = figure;
-                    gameStage = GameStage.PLACE_FIGURE;
-                }
-            } else {
-                boolean wasPlaced = placeFigure(x, y);
-                if (wasPlaced) {
-                    gameStage = GameStage.SELECT_FIGURE;
-                    chosenFigure = null;
-                }
+            if (x > 512 + 72) {
+                x -= 512 + 72;
             }
-        }
-    }
-
-    private boolean placeFigure(int x, int y) {
-        if (x > 0 && x < 512 && y > 0 && y < 512) {
             int xx = x / 128;
             int yy = y / 128;
 
-            Board board = gameManager.getBoard();
-            return board.putFigure(chosenFigure, xx, yy);
+            gameManager.move(xx, yy);
         }
-        return false;
-    }
-
-    private Figure selectFigure(int x, int y) {
-        if (x > 512 + 72 && x < 512 * 2 + 72 && y > 0 && y < 512) {
-            int xx = (x - 512 - 72) / 128;
-            int yy = y / 128;
-
-            int index = yy * 4 + xx;
-            List<Figure> figures = gameManager.getFiguresPool().getFigures();
-
-            Figure figure = figures.get(index);
-            figures.set(index, null);
-            return figure;
-        }
-        return null;
     }
 
     @Override
@@ -77,9 +41,17 @@ public class Quarto extends BasicGame {
         drawFigures(g);
         drawPool(g);
         drawChosenFigure(g);
+        drawResult(g);
+    }
+
+    private void drawResult(Graphics g) {
+        if (gameManager.gameIsEnded()) {
+            g.drawString("WIN", 100, 100);
+        }
     }
 
     private void drawChosenFigure(Graphics g) {
+        Figure chosenFigure = gameManager.getChosenFigure();
         if (chosenFigure != null) {
             g.drawImage(chosenFigure.getImage(), 512 + 16, 256 - 32);
         }

@@ -1,6 +1,9 @@
 package stuff;
 
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 public class GameManager {
     @Getter
@@ -8,15 +11,39 @@ public class GameManager {
     @Getter
     private final FiguresPool figuresPool = new FiguresPool();
 
-//    private final Player player1;
-//    private final Player player2;
-//
-//    public GameManager(Player player1, Player player2) {
-//        this.player1 = player1;
-//        this.player2 = player2;
-//    }
+    @Getter
+    @Setter
+    private Figure chosenFigure;
 
-    public void play() {
+    private boolean result;
 
+    public void move(int x, int y) {
+        if (chosenFigure == null) {
+            choseFigure(x, y);
+        } else {
+            placeFigure(x, y);
+        }
+    }
+
+    private void choseFigure(int x, int y) {
+        List<Figure> figures = figuresPool.getFigures();
+        int index = y * 4 + x;
+        Figure figure = figures.get(index);
+        if (figure != null) {
+            chosenFigure = figure;
+            figures.set(index, null);
+        }
+    }
+
+    private void placeFigure(int x, int y) {
+        boolean wasPlaced = board.putFigure(chosenFigure, x, y);
+        if (wasPlaced) {
+            result = board.checkWin(x, y);
+            chosenFigure = null;
+        }
+    }
+
+    public boolean gameIsEnded() {
+        return result || figuresPool.isEmpty();
     }
 }
