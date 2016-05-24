@@ -1,3 +1,5 @@
+package stuff;
+
 import lombok.Getter;
 import qualities.Color;
 import qualities.Relief;

@@ -1,5 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
+import stuff.Figure;
+import stuff.FiguresPool;
 
 import java.util.List;
 
