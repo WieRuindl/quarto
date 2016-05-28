@@ -1,19 +1,21 @@
-package stuff;
+package game_manager;
 
 import lombok.Getter;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Board {
 
     @Getter
-    private final Image image;
+    private Image image;
 
     private Figure[][] cells = new Figure[4][4];
 
-    public Board() {
+    public void initImage() {
         try {
-            this.image = new Image("figures/board.png");
+            image = new Image("images/board.png");
         } catch (SlickException e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -94,5 +96,16 @@ public class Board {
 
     public Image getCellImage(int x, int y) {
         return (cells[x][y] != null) ? cells[x][y].getImage() : null;
+    }
+
+    public boolean isFull() {
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                if (cells[x][y] == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

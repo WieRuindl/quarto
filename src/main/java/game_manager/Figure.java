@@ -1,4 +1,4 @@
-package stuff;
+package game_manager;
 
 import lombok.Data;
 import org.newdawn.slick.Image;
@@ -15,16 +15,11 @@ public class Figure {
     private final Shape shape;
     private final Relief relief;
 
-    private final Image image;
+    private Image image;
 
-    public Figure(Size size, Color color, Shape shape, Relief relief) {
-        this.size = size;
-        this.color = color;
-        this.shape = shape;
-        this.relief = relief;
-
+    public void initImage() {
         try {
-            this.image = new Image("figures/"+size+color+shape+relief+".png");
+            this.image = new Image("images/figures/" +size+color+shape+relief+".png");
         } catch (SlickException e) {
             e.printStackTrace();
             throw new RuntimeException();

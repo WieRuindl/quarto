@@ -1,6 +1,7 @@
-package stuff;
+package game_manager;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 import qualities.Color;
 import qualities.Relief;
 import qualities.Shape;
@@ -9,6 +10,7 @@ import qualities.Size;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class FiguresPool {
     @Getter
     private List<Figure> figures = new LinkedList<>();
@@ -26,12 +28,7 @@ public class FiguresPool {
         }
     }
 
-    public boolean isEmpty() {
-        for (Figure figure : figures) {
-            if (figure != null) {
-                return false;
-            }
-        }
-        return true;
+    public void initImages() {
+        figures.forEach(Figure::initImage);
     }
 }

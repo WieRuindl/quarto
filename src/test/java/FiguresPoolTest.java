@@ -1,7 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
-import stuff.Figure;
-import stuff.FiguresPool;
+import game_manager.Figure;
+import game_manager.FiguresPool;
 
 import java.util.List;
 
