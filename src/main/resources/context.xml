@@ -8,13 +8,19 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="slick2DWindow.properties"/>
+    </bean>
+
     <context:annotation-config/>
     <context:component-scan base-package="game_manager, graphics"/>
 
     <bean class="org.newdawn.slick.AppGameContainer">
         <constructor-arg ref="quarto"/>
-        <constructor-arg value="1024"/>
-        <constructor-arg value="512"/>
+        <constructor-arg value="#{${cell.size}*8}"/>
+        <constructor-arg value="#{${cell.size}*4}"/>
         <constructor-arg value="false"/>
+        <property name="targetFrameRate" value="${window.fps}"/>
+        <property name="showFPS" value="false"/>
     </bean>
 </beans>

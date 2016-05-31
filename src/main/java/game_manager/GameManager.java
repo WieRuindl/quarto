@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -14,15 +15,18 @@ public class GameManager {
     private Board board;
     @Getter
     @Autowired
-    private final FiguresPool figuresPool = new FiguresPool();
+    private FiguresPool figuresPool;
     @Getter
     @Autowired
-    private game_manager.Frame frame = new game_manager.Frame();
+    private Frame frame;
 
     private boolean result;
 
     public void choseFigure(int x, int y) {
         frame.setCoordinates(new Point(x, y));
+        frame.setFigureWasSelected(true);
+
+        selectedFiguresCoordinates.add(new Point(x, y));
     }
 
     public void placeFigure(int x, int y) {
@@ -31,11 +35,37 @@ public class GameManager {
         int index = coordinates.y * 4 + coordinates.x;
 
         Figure figure = figures.get(index);
-        boolean wasPlaced = board.putFigure(figure, x, y);
+        boolean wasPlaced = board.placeFigure(figure, x, y);
         if (wasPlaced) {
-            result = board.checkWin(x, y);
             figures.set(index, null);
+            result = board.checkWin(x, y);
+        }
 
+        frame.setCoordinates(new Point(-1, -1));
+        frame.setFigureWasSelected(false);
+
+        placedFiguresCoordinates.add(new Point(x, y));
+    }
+
+    private List<Point> selectedFiguresCoordinates = new ArrayList<>();
+    private List<Point> placedFiguresCoordinates = new ArrayList<>();
+
+    public void cancel() {
+        if (selectedFiguresCoordinates.isEmpty()) {
+            return;
+        }
+        if (selectedFiguresCoordinates.size() > placedFiguresCoordinates.size()) {
+            frame.setCoordinates(new Point(-1, -1));
+            frame.setFigureWasSelected(false);
+            selectedFiguresCoordinates.remove(selectedFiguresCoordinates.size() - 1);
+        } else {
+            Point figureCoordinates = placedFiguresCoordinates.remove(placedFiguresCoordinates.size() - 1);
+            Figure figure = board.removeFigure(figureCoordinates.x, figureCoordinates.y);
+            Point poolCoordinates = selectedFiguresCoordinates.get(selectedFiguresCoordinates.size() - 1);
+            int index = poolCoordinates.y * 4 + poolCoordinates.x;
+            figuresPool.returnToPool(figure, index);
+            frame.setCoordinates(poolCoordinates);
+            frame.setFigureWasSelected(true);
         }
     }
 

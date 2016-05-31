@@ -22,13 +22,19 @@ public class Board {
         }
     }
 
-    public boolean putFigure(Figure figure, int x, int y) {
+    public boolean placeFigure(Figure figure, int x, int y) {
         if (cells[x][y] != null) {
             return false;
         } else {
             cells[x][y] = figure;
             return true;
         }
+    }
+
+    public Figure removeFigure(int x, int y) {
+        Figure figure = cells[x][y];
+        cells[x][y] = null;
+        return figure;
     }
 
     public boolean checkWin(int x, int y) {

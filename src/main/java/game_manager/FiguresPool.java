@@ -28,6 +28,10 @@ public class FiguresPool {
         }
     }
 
+    public void returnToPool(Figure figure, int index) {
+        figures.set(index, figure);
+    }
+
     public void initImages() {
         figures.forEach(Figure::initImage);
     }

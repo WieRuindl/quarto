@@ -2,12 +2,13 @@ package game_manager;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import java.awt.*;
 
-@org.springframework.stereotype.Component
+@Component
 public class Frame {
     @Getter
     private Image image;

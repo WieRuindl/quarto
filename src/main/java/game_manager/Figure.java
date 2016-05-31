@@ -19,7 +19,7 @@ public class Figure {
 
     public void initImage() {
         try {
-            this.image = new Image("images/figures/" +size+color+shape+relief+".png");
+            this.image = new Image("images/figures/" + size + color + shape + relief + ".png");
         } catch (SlickException e) {
             e.printStackTrace();
             throw new RuntimeException();
